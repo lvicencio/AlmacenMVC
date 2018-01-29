@@ -57,3 +57,4 @@ E:\proyectos_C#\AlmacenMVC\AlmacenMVC\bin\es\System.Web.WebPages.Deployment.reso
 E:\proyectos_C#\AlmacenMVC\AlmacenMVC\bin\es\System.Web.WebPages.Razor.resources.dll
 E:\proyectos_C#\AlmacenMVC\AlmacenMVC\obj\Debug\AlmacenMVC.dll
 E:\proyectos_C#\AlmacenMVC\AlmacenMVC\obj\Debug\AlmacenMVC.pdb
+E:\proyectos_C#\AlmacenMVC\AlmacenMVC\obj\Debug\AlmacenMVC.csprojResolveAssemblyReference.cache

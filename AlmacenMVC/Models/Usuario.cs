@@ -8,7 +8,8 @@ namespace AlmacenMVC.Models
 {
     public class Usuario
     {
-        
+        public int Id_User { get; set; }
+
         [Required(ErrorMessage = "El Nombre no es Valido")]
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
@@ -65,14 +66,14 @@ namespace AlmacenMVC.Models
 
         }
 
-        public List<Usuarios> userDatos()
+        public List<Usuario> userDatos()
         {
-            List<Usuarios> List = new List<Usuarios>();
+            List<Usuario> List = new List<Usuario>();
             var query = from u in db.Usuarios select u;
             var listaData = query.ToList();
             foreach (var item in listaData)
             {
-                List.Add(new Usuarios()
+                List.Add(new Usuario()
                 {
                     Id_User = item.Id_User,
                     Nombre = item.Nombre,
@@ -87,10 +88,10 @@ namespace AlmacenMVC.Models
             return List;
         }
 
-        public  Usuarios editDatos(int id)
+        public  Usuario editDatos(int id)
         {
-            Usuarios datos = db.Usuarios.Where(x => x.Id_User == id).Select(x =>
-           new Usuarios()
+            Usuario datos = db.Usuarios.Where(x => x.Id_User == id).Select(x =>
+           new Usuario()
            {
                Id_User = x.Id_User,
                Nombre = x.Nombre,
@@ -103,6 +104,21 @@ namespace AlmacenMVC.Models
 
             return datos;
         }
+
+        public bool actualizar(Usuario model)
+        {
+            Usuarios u = db.Usuarios.Where(x => x.Id_User == model.Id_User).Single<Usuarios>();
+            u.Nombre = model.Nombre;
+            u.Apellido = model.Apellido;
+            u.UserName = model.UserName;
+            u.Email = model.Email;
+            u.Password = model.Password;
+            u.Id_Rol = model.Id_Rol;
+
+            db.SubmitChanges();
+            return true;
+        }
+
 
 
     }

@@ -9,6 +9,7 @@ namespace AlmacenMVC.Controllers
 {
     public class UsuariosController : Controller
     {
+        Usuario obj = new Usuario();
         // GET: Usuarios
         public ActionResult Index()
         {
@@ -21,7 +22,7 @@ namespace AlmacenMVC.Controllers
             }
             else
             {
-                Usuario obj = new Usuario();
+                
                 return View(obj.userDatos());
             }
             
@@ -65,18 +66,29 @@ namespace AlmacenMVC.Controllers
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ViewBag.Usuario = Session["UserName"];
+            ViewBag.Rol = Session["Rol"];
+
+            return View(obj.editDatos(id));
         }
 
         // POST: Usuarios/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Usuario model)
         {
+
+
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                if (obj.actualizar(model) == true)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(model);
+                }
+                
             }
             catch
             {
