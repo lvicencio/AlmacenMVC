@@ -120,6 +120,13 @@ namespace AlmacenMVC.Models
         }
 
 
+        public bool Borrar(int id)
+        {
+            Usuarios u = db.Usuarios.Where(x => x.Id_User == id).Single<Usuarios>();
+            db.Usuarios.DeleteOnSubmit(u);
+            db.SubmitChanges();
+            return true;
 
+        }
     }
 }

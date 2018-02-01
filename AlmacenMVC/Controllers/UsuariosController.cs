@@ -16,46 +16,87 @@ namespace AlmacenMVC.Controllers
             ViewBag.Usuario = Session["UserName"];
             ViewBag.Rol = Session["Rol"];
 
-            if (ViewBag.Usuario == "")
+            if (ViewBag.Usuario == null)
             {
+                limpiarCahe();
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                
+                limpiarCahe();
                 return View(obj.userDatos());
             }
-            
+
         }
 
         public ActionResult Salir()
         {
             Session.Clear();
-            return RedirectToAction("Usuarios", "Index");
+            Session.Abandon();
+            limpiarCahe();
+            return RedirectToAction("Index", "Home");
         }
 
 
         // GET: Usuarios/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            ViewBag.Usuario = Session["UserName"];
+            ViewBag.Rol = Session["Rol"];
+
+            if (ViewBag.Usuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                limpiarCahe();
+                return View(obj.editDatos(id));
+            }
+
         }
 
         // GET: Usuarios/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Usuario = Session["UserName"];
+            ViewBag.Rol = Session["Rol"];
+
+            if (ViewBag.Usuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                limpiarCahe();
+                return View();
+            }
         }
 
         // POST: Usuarios/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Usuario model)
         {
             try
             {
                 // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    if (model.Registrar() == false)
+                    {
+                        ViewBag.Message = "El UserName o Correo ya se encuentran Ocupado";
+                        return View("Create", model);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    return View("Create");
+                }
             }
             catch
             {
@@ -69,7 +110,17 @@ namespace AlmacenMVC.Controllers
             ViewBag.Usuario = Session["UserName"];
             ViewBag.Rol = Session["Rol"];
 
-            return View(obj.editDatos(id));
+            if (ViewBag.Usuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                limpiarCahe();
+                return View(obj.editDatos(id));
+            }
+
+
         }
 
         // POST: Usuarios/Edit/5
@@ -88,7 +139,7 @@ namespace AlmacenMVC.Controllers
                 {
                     return View(model);
                 }
-                
+
             }
             catch
             {
@@ -99,23 +150,47 @@ namespace AlmacenMVC.Controllers
         // GET: Usuarios/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            ViewBag.Usuario = Session["UserName"];
+            ViewBag.Rol = Session["Rol"];
+
+            if (ViewBag.Usuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                limpiarCahe();
+                return View(obj.editDatos(id));
+            }
         }
 
         // POST: Usuarios/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Usuario model)
         {
             try
             {
-                // TODO: Add delete logic here
+                if (obj.Borrar(id)== true)
+                {
+                    return RedirectToAction("Index");
+                }
 
-                return RedirectToAction("Index");
+                else
+                {
+                    return View(model);
+                }
             }
             catch
             {
                 return View();
             }
+        }
+
+        public void limpiarCahe()
+        {
+            Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+            Response.Cache.SetAllowResponseInBrowserHistory(false);
+            Response.Cache.SetNoStore();
         }
     }
 }

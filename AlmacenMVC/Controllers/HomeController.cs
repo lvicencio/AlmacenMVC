@@ -13,6 +13,7 @@ namespace AlmacenMVC.Controllers
         public ActionResult Index()
         {
             Session.Clear();
+            Session.Abandon();
             return View();
         }
 
