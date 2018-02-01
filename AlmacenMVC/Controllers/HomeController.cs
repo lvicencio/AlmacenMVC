@@ -31,8 +31,15 @@ namespace AlmacenMVC.Controllers
                 {
                     Session["UserName"] = datos.UserName;
                     Session["Rol"] = datos.Id_Rol;
+                    if (datos.Id_Rol == 0)
+                    {
+                        return RedirectToAction("Index", "Productos");
+                    }
+                    else
+                    {
 
-                    return RedirectToAction("Index","Usuarios");
+                        return RedirectToAction("Index", "Usuarios");
+                    }
                 }
                 else
                 {
